@@ -1,17 +1,11 @@
 require('dotenv').config()
-const dotenv = require('dotenv').config();
+//const dotenv = require('dotenv').config();
 const path = require('path');
-
 const express = require('express')
 const mongoose = require('mongoose')
 const phraseRoutes = require('./routes/phrases')
 const userRoutes = require('./routes/user')
 const { errorHandler } = require('./middleware/errorMiddleware');
-const connectDB = require('./config/db');
-//const routes = require("./routes");
-
-
-
 
 // express server
 const server = express()
@@ -21,10 +15,10 @@ server.use(express.json())
 server.use(express.urlencoded({ extended: true }));
 server.use(errorHandler);
 
-// server.use((req, res, next) => {
-//   console.log(req.path, req.method)
-//   next()
-// })
+server.use((req, res, next) => {
+  console.log(req.path, req.method)
+  next()
+})
 
 // routes
 
