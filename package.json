@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node backend/server.js",
-    "server": "nodemon backend/server.js",
+    "start": "node backend/index.js",
+    "server": "nodemon backend/server.js --ignore client",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run client\" \"npm run server\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend",

@@ -1,33 +1,66 @@
 require('dotenv').config()
+const dotenv = require('dotenv').config();
+const path = require('path');
 
 const express = require('express')
 const mongoose = require('mongoose')
 const phraseRoutes = require('./routes/phrases')
 const userRoutes = require('./routes/user')
+const { errorHandler } = require('./middleware/errorMiddleware');
+const connectDB = require('./config/db');
+//const routes = require("./routes");
 
-// express app
-const app = express()
+
+
+
+// express server
+const server = express()
 
 // middleware
-app.use(express.json())
+server.use(express.json())
+server.use(express.urlencoded({ extended: true }));
+server.use(errorHandler);
 
-app.use((req, res, next) => {
-  console.log(req.path, req.method)
-  next()
-})
+// server.use((req, res, next) => {
+//   console.log(req.path, req.method)
+//   next()
+// })
 
 // routes
-app.use('/api/phrases', phraseRoutes)
-app.use('/api/user', userRoutes)
 
-// connect to db
+//server.use(routes);
+server.use('/api/phrases', phraseRoutes)
+server.use('/api/user', userRoutes)
+
+// if (process.env.NODE_ENV != 'test') {
+//     connectDB();
+// }
+
+//connect to db
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     // listen for requests
-    app.listen(process.env.PORT, () => {
+    server.listen(process.env.PORT, () => {
       console.log('connected to db & listening on port', process.env.PORT)
     })
   })
   .catch((error) => {
     console.log(error)
   })
+
+// Serve frontend
+if (process.env.NODE_ENV === 'production') {
+    server.use(express.static(path.join(__dirname, '../frontend/build')));
+
+    server.get('*', (req, res) =>
+        res.sendFile(
+            path.resolve(__dirname, '../', 'frontend', 'build', 'index.html')
+        )
+    );
+} else {
+    server.get('/', (req, res) => res.send('Please set to production'));
+}
+
+module.exports = server;
+
+
