@@ -3,30 +3,25 @@ import { usePhrasesContext } from "../hooks/usePhrasesContext"
 import { useAuthContext } from "../hooks/useAuthContext"
 
 // components
-import PhraseDetails from '../components/PhraseDetails'
-import PhraseForm from '../components/PhraseForm'
 
-const Home = () => {
+import AllPhraseDetails from "../components/AllPhraseDetails";
+
+const Lingo = () => {
   const {phrases, dispatch} = usePhrasesContext()
   const {user} = useAuthContext()
 
   useEffect(() => {
     const fetchPhrases = async () => {
-      const response = await fetch('/api/phrases', {
+      const response = await fetch('/api/allPhrases', {
         headers: {'Authorization': `Bearer ${user.token}`},
       })
-
-      //console.log(response)
-
-      const json = await response.json()
-
-      //console.log(json)
-
+      console.log(response)
       if (response.ok) {
+        const json = await response.json()
         dispatch({type: 'SET_PHRASES', payload: json})
       }
     }
-
+    //fetchPhrases()
     if (user) {
       fetchPhrases()
     }
@@ -36,12 +31,11 @@ const Home = () => {
     <div className="home">
       <div className="phrases">
         {phrases && phrases.map((phrase) => (
-          <PhraseDetails key={phrase._id} phrase={phrase} />
+          <AllPhraseDetails key={phrase._id} phrase={phrase} />
         ))}
       </div>
-      <PhraseForm />
     </div>
   )
 }
 
-export default Home
+export default Lingo

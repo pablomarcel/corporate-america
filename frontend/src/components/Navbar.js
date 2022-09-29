@@ -13,10 +13,27 @@ const Navbar = () => {
   return (
     <header>
       <div className="container">
-        <Link to="/">
-          <h1>Corporate America Lingo</h1>
-        </Link>
+        <h1>Corporate America Lingo</h1>
         <nav>
+          <div>
+            <span>
+              <Link to="/allPhrases" style={{
+                padding:"7px",
+                border: "2px solid #1aac83",
+                borderRadius: "5px"
+              }}>All Lingo</Link>
+            </span>
+            <span>
+              <Link to="/" style={{
+                padding:"7px",
+                border: "2px solid orange",
+                borderRadius: "5px",
+                marginRight:"5px"
+              }}>My Lingo</Link>
+            </span>
+
+
+          </div>
           {user && (
             <div>
               <span>{user.email}</span>
