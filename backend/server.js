@@ -4,11 +4,17 @@ const path = require('path');
 const express = require('express')
 const mongoose = require('mongoose')
 const phraseRoutes = require('./routes/phrases')
+const allPhraseRoutes = require('./routes/allPhrases')
 const userRoutes = require('./routes/user')
 const { errorHandler } = require('./middleware/errorMiddleware');
+const cors = require("cors");
 
 // express server
 const server = express()
+
+server.use(cors({
+    origin: '*'
+}));
 
 // middleware
 server.use(express.json())
@@ -24,7 +30,9 @@ server.use((req, res, next) => {
 
 //server.use(routes);
 server.use('/api/phrases', phraseRoutes)
+server.use('/api/allPhrases', allPhraseRoutes)
 server.use('/api/user', userRoutes)
+
 
 // if (process.env.NODE_ENV != 'test') {
 //     connectDB();
